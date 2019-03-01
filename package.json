@@ -1,0 +1,16 @@
+{
+  "name": "affirmation-train",
+  "version": "0.0.1",
+  "description": "a project to pull data from affirmation-train.org. The Wordpress API is blocked and so normal requests from things like Postman don't work. I'm using it as a chance to explore nightmare.ja",
+  "main": "index.js",
+  "author": "Mayowa",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "mocha": "^6.0.2",
+    "nightmare": "^3.0.1"
+  },
+  "scripts": {
+    "test": "mocha"
+  }
+}
