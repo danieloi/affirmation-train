@@ -1,3 +1,9 @@
+/**
+ * commented pieces of code were used
+ * at different phases in pulling data for
+ * different purposes. They aren't useless!!!
+ */
+
 const Nightmare = require("nightmare");
 const db = require("./db");
 
@@ -72,22 +78,46 @@ async function pullContentFromPage(page) {
   }
 }
 
-let i = 731;
-links = db.get("links").value();
+// let i = 731;
+// links = db.get("links").value();
 
-function fetchPosts() {
-  pullContentFromPage(links[i]).then(content => {
-    db.get("posts")
-      .push({ link: links[i], content })
-      .write();
-    i++;
-    if (i < links.length) {
-      fetchPosts();
-    }
-  });
+function fillPostsWithContent() {
+  // check for post within db without content key
+  const withoutContent = db
+    .get("posts")
+    .find(function(p) {
+      return !p.content;
+    })
+    .value();
+  if (withoutContent) {
+    console.log(withoutContent);
+    //terminating condition for recursion
+    //pull content from link and update entry in db then run function again
+    pullContentFromPage(withoutContent.link).then(content => {
+      db.get("posts")
+        .find({ link: withoutContent.link })
+        .assign({ link: withoutContent.link, content })
+        .write();
+      fillPostsWithContent();
+    });
+  }
 }
 
-fetchPosts();
+fillPostsWithContent();
+
+// function fetchPosts() {
+//   pullContentFromPage(links[i]).then(content => {
+//     db.get("posts")
+//       .push({ link: links[i], content })
+//       .write();
+//     i++;
+//     if (i < links.length) {
+//       fetchPosts();
+//     }
+//   });
+// }
+
+// fetchPosts();
 
 // {
 //   return await nightmare
