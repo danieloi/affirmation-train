@@ -12,5 +12,8 @@
   },
   "scripts": {
     "test": "mocha"
+  },
+  "dependencies": {
+    "lowdb": "^1.0.0"
   }
 }
